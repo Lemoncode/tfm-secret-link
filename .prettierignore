@@ -1,0 +1,11 @@
+.claude/
+.lemony/
+doc/
+docs/
+harness.config*
+pnpm-lock.yaml
+dist/
+coverage/
+.turbo/
+node_modules/
+README.md

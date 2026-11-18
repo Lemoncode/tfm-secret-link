@@ -75,6 +75,12 @@ rollback:
 #   - lint
 #   - test
 #   - build
+gates:
+  - typecheck
+  - format:check
+  - test
+  - build
+  - audit
 
 # Design tokens (the `design-tokens` verbs, and the token lines of `doctor` / `status`).
 # `scan_extensions`: the anti-hardcode scan inspects a built-in set of UI/style

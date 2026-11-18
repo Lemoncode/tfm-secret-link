@@ -1,0 +1,22 @@
+services:
+  mongo:
+    # Pinned by tag and by the multi-arch index digest: a registry re-tag cannot change the image.
+    image: mongo:8.0.34@sha256:b9924c330a8bbc5800fe9c69f04a84e221eca7b28fd049a0354147d9908fa142
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:?set MONGO_ROOT_USERNAME in .env (cp .env.example .env)}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD in .env (cp .env.example .env)}
+    ports:
+      # Loopback only: not reachable from the local network.
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mongo-data:
