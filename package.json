@@ -1,5 +1,23 @@
 {
+  "name": "tfm-secret-link",
+  "private": true,
+  "packageManager": "pnpm@10.19.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "audit": "pnpm audit"
+  },
   "devDependencies": {
-    "@lemoncode/lemony": "^0.12.0"
+    "@lemoncode/lemony": "0.12.0",
+    "prettier": "3.10.0",
+    "turbo": "2.11.10"
   }
 }
