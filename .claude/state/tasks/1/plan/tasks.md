@@ -35,36 +35,36 @@
 
 ## Group 1 — Base del workspace y política de dependencias _(el gestor de paquetes y su política deciden qué código de terceros se ejecuta; además deben mantener vivo el harness)_ [risk: supply-chain]
 
-- [ ] **T1 — La raíz migra de npm a un workspace pnpm y el harness sigue funcionando; implements PD1, PD12.**
+- [x] **T1 — La raíz migra de npm a un workspace pnpm y el harness sigue funcionando; implements PD1, PD12.**
   Desaparece `package-lock.json` y aparece `pnpm-lock.yaml`. Se añaden `pnpm-workspace.yaml` (`apps/*`, `packages/*`), `packageManager: pnpm@10.19.0`, `.nvmrc` (24) y `engines.node`. `@lemoncode/lemony` queda fijado exacto a `0.12.0`. Comprobación con una ejecución real: tras `pnpm install`, `.claude/hooks/lib/lemony.sh --version` imprime `0.12.0` y resuelve el bin local `node_modules/.bin/lemony`.
-- [ ] **T2 — La política estricta de dependencias está activa; implements PD2.**
+- [x] **T2 — La política estricta de dependencias está activa; implements PD2.**
   `save-exact`, `minimumReleaseAge: 10080`, la única excepción `@lemoncode/lemony@0.12.0` y `onlyBuiltDependencies` vacía. Comprobación con una ejecución real: añadir una versión publicada hace menos de 7 días se rechaza, y ninguna dependencia ejecuta scripts de ciclo de vida.
-- [ ] **T3 — Turborepo, el tsconfig base y Prettier están en la raíz; implements PD9, PD12, and respects PD7.**
+- [x] **T3 — Turborepo, el tsconfig base y Prettier están en la raíz; implements PD9, PD12, and respects PD7.**
   `turbo.json` define las tareas `dev` (persistente, sin caché), `build`, `typecheck`, `format:check`, `test` y `test:coverage`. `tsconfig.base.json` lleva `strict`, `noUncheckedIndexedAccess` y `erasableSyntaxOnly`. Los scripts raíz son `pnpm dev|build|typecheck|format:check|test|test:coverage`, más `audit`. No hay tarea ni dependencia de linter. Los añadidos a `.gitignore` van aquí.
 
 ## Group 2 — Back Hono _(abre la primera superficie HTTP: cabeceras de seguridad y servicio de archivos estáticos)_ [risk: transport, injection, supply-chain]
 
-- [ ] **T4 — `GET /api/health` responde 200 con `{ status: "ok" }`; implements PD5, PD7, PD8, PD11.**
+- [x] **T4 — `GET /api/health` responde 200 con `{ status: "ok" }`; implements PD5, PD7, PD8, PD11.**
   `apps/back` usa Hono y `@hono/node-server`, sin driver de Mongo. Lleva un test Vitest (environment `node`) que llama a `app.request()` y está primero en rojo. Usa imports relativos con extensión `.ts` y nada de sintaxis no borrable.
-- [ ] T5 — Toda respuesta del back lleva `secureHeaders` con la CSP estricta y `Cache-Control: no-store`, y ninguna lleva `X-Powered-By`; lo comprueban tests sobre `/api/health` y sobre una ruta inexistente; implements PD11.
-- [ ] T6 — `pnpm --filter back dev` arranca con `node --watch src/index.ts` y `start` con `node src/index.ts`, sin tsx ni esbuild, en `127.0.0.1:3000`; `typecheck` ejecuta `tsc --noEmit`; ejecución real con `curl` a `/api/health`; implements PD5, PD12.
-- [ ] **T7 — Con `NODE_ENV=production` Hono sirve los estáticos de `apps/front/dist` desde el mismo origen; implements PD6.**
+- [x] T5 — Toda respuesta del back lleva `secureHeaders` con la CSP estricta y `Cache-Control: no-store`, y ninguna lleva `X-Powered-By`; lo comprueban tests sobre `/api/health` y sobre una ruta inexistente; implements PD11.
+- [x] T6 — `pnpm --filter back dev` arranca con `node --watch src/index.ts` y `start` con `node src/index.ts`, sin tsx ni esbuild, en `127.0.0.1:3000`; `typecheck` ejecuta `tsc --noEmit`; ejecución real con `curl` a `/api/health`; implements PD5, PD12.
+- [x] **T7 — Con `NODE_ENV=production` Hono sirve los estáticos de `apps/front/dist` desde el mismo origen; implements PD6.**
   Tests contra un directorio de fixture: `/` devuelve `index.html`, un asset existente se sirve, `/api/health` no queda tapado y un intento de path traversal (`/../package.json`, también codificado) no sale del directorio. Fuera de producción no se sirven estáticos.
 
 ## Group 3 — Front Vite sin dependencias de cliente _(primer código que se entrega al navegador; Vite y Vitest entran como dependencias de desarrollo)_ [risk: supply-chain]
 
-- [ ] T8 — Una función pura interpreta la respuesta de `/api/health` ("operativo" solo con `{ status: "ok" }`; cualquier otra respuesta, cuerpo no JSON o error de red da "no disponible"); tests Vitest con environment `node`; implements PD8, PD11.
-- [ ] T9 — `apps/front` tiene `index.html`, `styles.css` (CSS puro) y `main.ts`, que llama a `/api/health` y muestra el estado con `textContent`; `package.json` no tiene `dependencies` (solo devDependencies) y no hay estilos ni scripts inline ni recursos de terceros; implements PD11, PD6.
-- [ ] **T10 — `pnpm dev` levanta front y back juntos y `pnpm build` produce un `dist` que el back sirve; implements PD6, PD12.**
+- [x] T8 — Una función pura interpreta la respuesta de `/api/health` ("operativo" solo con `{ status: "ok" }`; cualquier otra respuesta, cuerpo no JSON o error de red da "no disponible"); tests Vitest con environment `node`; implements PD8, PD11.
+- [x] T9 — `apps/front` tiene `index.html`, `styles.css` (CSS puro) y `main.ts`, que llama a `/api/health` y muestra el estado con `textContent`; `package.json` no tiene `dependencies` (solo devDependencies) y no hay estilos ni scripts inline ni recursos de terceros; implements PD11, PD6.
+- [x] **T10 — `pnpm dev` levanta front y back juntos y `pnpm build` produce un `dist` que el back sirve; implements PD6, PD12.**
   Vite en 5173 hace proxy de `/api` y `/ws` (`ws: true`) a `127.0.0.1:3000`. Ejecución real: con `pnpm dev`, la página en `localhost:5173` muestra "Servidor operativo". Con `pnpm build` y el back en producción, `localhost:3000` sirve la página con la CSP sin que el navegador registre violaciones.
 
 ## Group 4 — Contenedor MongoDB _(credenciales y exposición de red del almacén de datos)_ [risk: secrets]
 
-- [ ] **T11 — `docker compose up -d` levanta un MongoDB autenticado, solo en local y que llega a healthy; implements PD4, and respects PD3.**
+- [x] **T11 — `docker compose up -d` levanta un MongoDB autenticado, solo en local y que llega a healthy; implements PD4, and respects PD3.**
   `docker-compose.yml` en la raíz con `mongo:8.0.x` fijado por tag y digest sha256, credenciales root desde `.env`, `127.0.0.1:27017:27017`, un volumen con nombre y un healthcheck. Se versiona `.env.example`. No se crean base de datos, colecciones ni índice TTL. Ejecución real: `docker compose ps` muestra `healthy`, la conexión sin credenciales no puede listar bases de datos y el puerto no escucha en `0.0.0.0`.
 
 ## Group 5 — CI y cierre _(el workflow ejecuta código de terceros con un token del repositorio; la documentación y los gates se cierran contra los scripts reales)_ [risk: supply-chain]
 
-- [ ] **T12 — GitHub Actions en PR y push a `main`; implements PD10, and respects PD2.**
+- [x] **T12 — GitHub Actions en PR y push a `main`; implements PD10, and respects PD2.**
   Pasos: `pnpm install --frozen-lockfile`, `turbo typecheck`, `format:check`, `test`, `build` y `pnpm audit`. Cada action se fija por SHA de commit (con la versión en un comentario) y el workflow lleva `permissions: contents: read`. Comprobación: en un PR el workflow pasa en verde, y con el lockfile desalineado falla.
-- [ ] T13 — `harness.config.yml` declara `gates` (`typecheck`, `format:check`, `test`, `build`, `audit`) con los nombres exactos de los scripts raíz, y el `README.md` gana la sección "Cómo arrancar" en español; `lemony doctor` deja de avisar de que faltan gates; implements PD12, PD10.
+- [x] T13 — `harness.config.yml` declara `gates` (`typecheck`, `format:check`, `test`, `build`, `audit`) con los nombres exactos de los scripts raíz, y el `README.md` gana la sección "Cómo arrancar" en español; `lemony doctor` deja de avisar de que faltan gates; implements PD12, PD10.

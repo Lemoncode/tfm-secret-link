@@ -1,0 +1,102 @@
+{
+  "version": 3,
+  "step": "full-pass",
+  "criteria": [
+    { "id": "T1", "evidence": "package-lock.json deleted, pnpm-lock.yaml + pnpm-workspace.yaml (apps/*, packages/*), packageManager pnpm@10.19.0, .nvmrc 24, engines.node >=24 <25, lemony pinned 0.12.0; ran .claude/hooks/lib/lemony.sh --version -> 0.12.0 with node_modules/.bin/lemony present" },
+    { "id": "T2", "evidence": "pnpm-workspace.yaml: saveExact, minimumReleaseAge 10080, single exact exclude @lemoncode/lemony@0.12.0, onlyBuiltDependencies []; pnpm config get confirms save-exact=true, minimum-release-age=10080; pnpm ignored-builds -> None; no ^/~ in any manifest. Fresh-version rejection not re-probed (Implementer's scratch probe logged)" },
+    { "id": "T3", "evidence": "turbo.json tasks dev (persistent, no cache), build, typecheck, test, test:coverage, //#format:check; tsconfig.base strict + noUncheckedIndexedAccess + erasableSyntaxOnly; root scripts incl. audit; no lint task or linter dep; .gitignore additions present" },
+    { "id": "T4", "evidence": "app.spec GET /api/health 200 {status:ok} green; hono + @hono/node-server only deps, no mongo driver; relative .ts imports; real run curl -> 200 {\"status\":\"ok\"}" },
+    { "id": "T5", "evidence": "app.spec checks full CSP directive set, no-store and no X-Powered-By on /api/health and /does-not-exist; real-run headers match; mutants (drop no-store, loosen form-action) killed" },
+    { "id": "T6", "evidence": "back scripts dev=node --watch src/index.ts, start=node src/index.ts, typecheck=tsc --noEmit, no tsx/esbuild; real run: start listens on 127.0.0.1 only (lsof), running dev instance bound 127.0.0.1:3000" },
+    { "id": "T7", "evidence": "static.spec covers /, asset, /api/health not shadowed (fixture api/health file), six traversal forms 404; staticRootFor only in production (config.spec); real run NODE_ENV=production serves / and asset, --path-as-is traversal attempts 404; dev back / -> 404" },
+    { "id": "T8", "evidence": "health.ts checkHealth pure with injected fetch; spec covers ok, other status, null body, 503+ok body, non-JSON, network error; two mutants killed" },
+    { "id": "T9", "evidence": "index.html lang=es with external css/js only, main.ts uses textContent, front package.json has no dependencies; built dist/index.html has no inline script or style" },
+    { "id": "T10", "evidence": "vite.config proxies /api and /ws (ws:true) to 127.0.0.1:3000 on strict 5173; curl localhost:5173/api/health through the running dev instance -> {status:ok}; pnpm build + production back serves the page with CSP. Browser CSP-violation check not repeated (Implementer logged headless Chrome run)" },
+    { "id": "T11", "evidence": "compose: mongo:8.0.34 tag+digest, ${VAR:?} creds, 127.0.0.1:27017, named volume, mongosh ping healthcheck; config without env fails with the clear message; real run (scratch project + network_mode: bridge override for the exhausted address pools) -> healthy, unauth listDatabases rejected, auth sees admin/config/local only, published on 127.0.0.1; torn down with down -v" },
+    { "id": "T12", "evidence": "ci.yml on pull_request + push main, permissions contents: read, actions pinned by SHA with version comments, checkout persist-credentials false, frozen-lockfile install, turbo typecheck/format:check/test/build, pnpm audit; no outsider ${{ }} in run. Not executed on GitHub yet (nothing pushed)" },
+    { "id": "T13", "evidence": "harness.config.yml gates typecheck, format:check, test, build, audit match root scripts; lemony doctor -> 5 review gate(s) declared; README Como arrancar section in Spanish" },
+    { "id": "PD1", "evidence": "pnpm 10.19.0 workspace, npm lockfile removed" },
+    { "id": "PD2", "evidence": "exact pins, 7-day release age with one dated exact exclude, empty build allowlist, frozen lockfile + pnpm audit in CI" },
+    { "id": "PD3", "evidence": "only the container; no db, collections, TTL index or driver" },
+    { "id": "PD4", "evidence": "verified by the compose real run (tag+digest, auth, loopback port, named volume, healthy)" },
+    { "id": "PD5", "evidence": "Hono + node-server on Node 24 type stripping, node --watch/node, tsc --noEmit only, erasableSyntaxOnly, .ts imports" },
+    { "id": "PD6", "evidence": "same origin: Vite proxy in dev (checked), Hono serves apps/front/dist in production (checked)" },
+    { "id": "PD7", "evidence": "apps/front, apps/back, packages/* reserved in workspace" },
+    { "id": "PD8", "evidence": "vitest + @vitest/coverage-v8 5.1.0 in both apps, environment node; test:coverage reports" },
+    { "id": "PD9", "evidence": "prettier only, format:check passes, no lint task" },
+    { "id": "PD10", "evidence": "see T12" },
+    { "id": "PD11", "evidence": "health endpoint, secureHeaders strict CSP, no-store, no X-Powered-By; front html/css/ts with zero runtime deps" },
+    { "id": "PD12", "evidence": ".nvmrc/engines/packageManager, shared base tsconfig, ports 3000/5173, turbo tasks as listed" }
+  ],
+  "gates": [
+    { "kind": "script", "script": "typecheck", "evidence": "pnpm typecheck green; re-run uncached with turbo --force green" },
+    { "kind": "script", "script": "format:check", "evidence": "All matched files use Prettier code style" },
+    { "kind": "script", "script": "test", "evidence": "back 21/21, front 6/6; re-run uncached green; test:coverage 100% both apps" },
+    { "kind": "script", "script": "build", "evidence": "vite build produced dist (index.html + hashed js/css); uncached re-run green" },
+    { "kind": "script", "script": "audit", "evidence": "pnpm audit: No known vulnerabilities found" },
+    { "kind": "real-run", "evidence": "production back on :3917 (headers, /, asset, traversal 404s, loopback bind); dev instance via Vite proxy :5173; docker compose up under scratch project with network override -> healthy, auth enforced, loopback only; lemony.sh --version 0.12.0" }
+  ],
+  "mutants": {
+    "basis": "declared-risk",
+    "files": [
+      { "file": "apps/back/src/app.ts", "status": "probed", "probes": [
+        { "mutation": "deleted the Cache-Control no-store line", "outcome": "killed", "killedBy": "apps/back/src/app.spec.ts" },
+        { "mutation": "form-action 'none' -> 'self'", "outcome": "killed", "killedBy": "apps/back/src/app.spec.ts" },
+        { "mutation": "serveStatic root widened to staticRoot + /..", "outcome": "killed", "killedBy": "apps/back/src/static.spec.ts" }
+      ] },
+      { "file": "apps/back/src/config.ts", "status": "probed", "probes": [
+        { "mutation": "=== production -> !== production", "outcome": "killed", "killedBy": "apps/back/src/config.spec.ts" }
+      ] },
+      { "file": "apps/back/src/index.ts", "status": "probed", "probes": [
+        { "mutation": "default HOST 127.0.0.1 -> 0.0.0.0", "outcome": "survived" }
+      ] },
+      { "file": "apps/front/src/health.ts", "status": "probed", "probes": [
+        { "mutation": "dropped the !response.ok guard", "outcome": "killed", "killedBy": "apps/front/src/health.spec.ts" },
+        { "mutation": "status === ok -> status !== undefined", "outcome": "killed", "killedBy": "apps/front/src/health.spec.ts" }
+      ] },
+      { "file": "apps/front/src/main.ts", "status": "probed", "probes": [
+        { "mutation": "TEXT[state] -> TEXT.up", "outcome": "survived" }
+      ] },
+      { "file": ".env.example", "status": "not-applicable", "reason": "no-mutable-logic", "note": "placeholder values" },
+      { "file": ".github/workflows/ci.yml", "status": "not-applicable", "reason": "no-mutable-logic", "note": "declarative workflow; reviewed under security-review supply-chain" },
+      { "file": ".gitignore", "status": "not-applicable", "reason": "no-mutable-logic", "note": "ignore patterns" },
+      { "file": ".nvmrc", "status": "not-applicable", "reason": "no-mutable-logic", "note": "version string" },
+      { "file": ".prettierignore", "status": "not-applicable", "reason": "no-mutable-logic", "note": "ignore patterns" },
+      { "file": "README.md", "status": "not-applicable", "reason": "no-mutable-logic", "note": "documentation" },
+      { "file": "apps/back/package.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "manifest" },
+      { "file": "apps/back/src/__fixtures__/secret.txt", "status": "not-applicable", "reason": "no-mutable-logic", "note": "test fixture data" },
+      { "file": "apps/back/src/__fixtures__/static/api/health", "status": "not-applicable", "reason": "no-mutable-logic", "note": "test fixture data" },
+      { "file": "apps/back/src/__fixtures__/static/assets/app.js", "status": "not-applicable", "reason": "no-mutable-logic", "note": "test fixture data" },
+      { "file": "apps/back/src/__fixtures__/static/index.html", "status": "not-applicable", "reason": "no-mutable-logic", "note": "test fixture data" },
+      { "file": "apps/back/tsconfig.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "compiler config" },
+      { "file": "apps/back/vitest.config.ts", "status": "not-applicable", "reason": "no-mutable-logic", "note": "test runner config" },
+      { "file": "apps/front/index.html", "status": "not-applicable", "reason": "no-mutable-logic", "note": "static markup" },
+      { "file": "apps/front/package.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "manifest" },
+      { "file": "apps/front/src/styles.css", "status": "not-applicable", "reason": "no-mutable-logic", "note": "stylesheet" },
+      { "file": "apps/front/tsconfig.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "compiler config" },
+      { "file": "apps/front/vite.config.ts", "status": "not-applicable", "reason": "no-mutable-logic", "note": "declarative dev-server/proxy config, exercised by the real run" },
+      { "file": "docker-compose.yml", "status": "not-applicable", "reason": "no-mutable-logic", "note": "declarative, exercised by the compose real run" },
+      { "file": "docs/prds/monorepo-scaffold-2026-11-18.md", "status": "not-applicable", "reason": "no-mutable-logic", "note": "PRD document" },
+      { "file": "harness.config.yml", "status": "not-applicable", "reason": "no-mutable-logic", "note": "gates list" },
+      { "file": "package.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "root manifest" },
+      { "file": "pnpm-lock.yaml", "status": "not-applicable", "reason": "generated", "note": "written by pnpm install" },
+      { "file": "pnpm-workspace.yaml", "status": "not-applicable", "reason": "no-mutable-logic", "note": "policy settings, checked via pnpm config get" },
+      { "file": "tsconfig.base.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "compiler config" },
+      { "file": "turbo.json", "status": "not-applicable", "reason": "no-mutable-logic", "note": "task graph config" }
+    ]
+  },
+  "passes": [
+    { "name": "senior-review", "outcome": "none", "examined": [".env.example", ".github/workflows/ci.yml", ".gitignore", ".nvmrc", ".prettierignore", "README.md", "apps/back/package.json", "apps/back/src/__fixtures__/secret.txt", "apps/back/src/__fixtures__/static/api/health", "apps/back/src/__fixtures__/static/assets/app.js", "apps/back/src/__fixtures__/static/index.html", "apps/back/src/app.ts", "apps/back/src/config.ts", "apps/back/src/index.ts", "apps/back/tsconfig.json", "apps/back/vitest.config.ts", "apps/front/index.html", "apps/front/package.json", "apps/front/src/health.ts", "apps/front/src/main.ts", "apps/front/src/styles.css", "apps/front/tsconfig.json", "apps/front/vite.config.ts", "docker-compose.yml", "docs/prds/monorepo-scaffold-2026-11-18.md", "harness.config.yml", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.base.json", "turbo.json"] },
+    { "name": "security-review", "outcome": "findings", "findings": [
+      { "file": ".github/workflows/ci.yml", "line": 15, "summary": "low/hardening: action SHA pins and the mongo image digest have no bot (Dependabot/Renovate) to bump them" }
+    ], "examined": [".env.example", ".github/workflows/ci.yml", ".gitignore", ".nvmrc", ".prettierignore", "README.md", "apps/back/package.json", "apps/back/src/__fixtures__/secret.txt", "apps/back/src/__fixtures__/static/api/health", "apps/back/src/__fixtures__/static/assets/app.js", "apps/back/src/__fixtures__/static/index.html", "apps/back/src/app.ts", "apps/back/src/config.ts", "apps/back/src/index.ts", "apps/back/tsconfig.json", "apps/back/vitest.config.ts", "apps/front/index.html", "apps/front/package.json", "apps/front/src/health.ts", "apps/front/src/main.ts", "apps/front/src/styles.css", "apps/front/tsconfig.json", "apps/front/vite.config.ts", "docker-compose.yml", "docs/prds/monorepo-scaffold-2026-11-18.md", "harness.config.yml", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.base.json", "turbo.json"] },
+    { "name": "silent-failure-hunter", "outcome": "findings", "findings": [
+      { "file": "apps/back/src/index.ts", "line": 7, "summary": "low: PORT='' passes ?? and Number('') is 0 (random port), HOST='' likewise binds all interfaces; no fail-fast on an empty or non-numeric value" }
+    ], "examined": [".env.example", ".github/workflows/ci.yml", ".gitignore", ".nvmrc", ".prettierignore", "README.md", "apps/back/package.json", "apps/back/src/__fixtures__/secret.txt", "apps/back/src/__fixtures__/static/api/health", "apps/back/src/__fixtures__/static/assets/app.js", "apps/back/src/__fixtures__/static/index.html", "apps/back/src/app.ts", "apps/back/src/config.ts", "apps/back/src/index.ts", "apps/back/tsconfig.json", "apps/back/vitest.config.ts", "apps/front/index.html", "apps/front/package.json", "apps/front/src/health.ts", "apps/front/src/main.ts", "apps/front/src/styles.css", "apps/front/tsconfig.json", "apps/front/vite.config.ts", "docker-compose.yml", "docs/prds/monorepo-scaffold-2026-11-18.md", "harness.config.yml", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.base.json", "turbo.json"] },
+    { "name": "test-gap-report", "outcome": "none", "examined": [".env.example", ".github/workflows/ci.yml", ".gitignore", ".nvmrc", ".prettierignore", "README.md", "apps/back/package.json", "apps/back/src/__fixtures__/secret.txt", "apps/back/src/__fixtures__/static/api/health", "apps/back/src/__fixtures__/static/assets/app.js", "apps/back/src/__fixtures__/static/index.html", "apps/back/src/app.ts", "apps/back/src/config.ts", "apps/back/src/index.ts", "apps/back/tsconfig.json", "apps/back/vitest.config.ts", "apps/front/index.html", "apps/front/package.json", "apps/front/src/health.ts", "apps/front/src/main.ts", "apps/front/src/styles.css", "apps/front/tsconfig.json", "apps/front/vite.config.ts", "docker-compose.yml", "docs/prds/monorepo-scaffold-2026-11-18.md", "harness.config.yml", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig.base.json", "turbo.json"] }
+  ],
+  "external_effects": {
+    "outcome": "none",
+    "reason": "first scaffold of a private, unpublished app (package.json private: true): every change is additive; the npm -> pnpm switch only changes how this repo's own contributors install, documented in the README, and nothing the repo publishes or others consume changes"
+  }
+}
