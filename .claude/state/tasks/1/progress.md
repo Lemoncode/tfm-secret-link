@@ -51,3 +51,7 @@ Verdict: APPROVE. Ledger `.claude/state/tasks/1/review-ledger/full-pass.json` va
 - lemony.sh --version -> 0.12.0; lemony doctor -> 5 review gates declared.
 - Mutants (hand probes, all reverted, tree checked clean): app.ts drop no-store KILLED, form-action 'none'->'self' KILLED, static root widened KILLED; config.ts === -> !== KILLED; health.ts drop !ok guard KILLED, status check weakened KILLED; index.ts default HOST -> 0.0.0.0 SURVIVED; main.ts TEXT[state] -> TEXT.up SURVIVED (both entry files have no spec; covered only by real runs).
 - Advisory: index.ts:6-7 empty HOST/PORT pass `??` (verified: HOST= binds *:port; PORT= gives port 0); no Dependabot/Renovate bumps the action SHAs and image digest; specs use toEqual/toBe rather than toStrictEqual; main.ts fetch has no timeout (page can stay on "Comprobando servidor…").
+
+## Post-checkpoint note
+
+The checkpoint verb staged the whole worktree, so `doc/` landed in `4ede2aa` (pushed). Requester chose to keep it versioned: PD13.

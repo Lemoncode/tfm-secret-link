@@ -94,3 +94,7 @@ None.
 ## Next Steps
 
 - [ ] Hand off to the Planner (`write-plan`) to turn this PRD into the task's plan.
+
+## Decisions from the gate
+
+- **PD13 — Versionado del documento de producto**: la carpeta `doc/` (`00-definicion-transferencia-segura-secretos .md` y `.pdf`) queda versionada en el repo — decided by the requester after the implementation checkpoint of task #1 (the checkpoint verb staged the whole worktree and committed it in `4ede2aa`; asked, the requester chose to keep it); discarded: the plan's call of not committing `doc/`.
