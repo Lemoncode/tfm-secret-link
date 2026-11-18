@@ -1,0 +1,20 @@
+node_modules/
+
+# BEGIN lemony
+.claude/state/current-*.md
+.claude/state/.ptr.*
+.claude/state/sessions/
+.claude/state/events.jsonl
+.claude/state/ledger-runs.jsonl
+.claude/state/telemetry-cursor.json
+.claude/state/telemetry-consent.json
+.claude/state/.telemetry-notice-shown
+.claude/state/telemetry-rejected.jsonl
+.lemony/
+.claude/state/tmp/
+.claude/.harness/snapshots/
+.claude/**/*.displaced
+.claude/**/*.displaced.[0-9]*
+/harness.config.schema.json.displaced
+/harness.config.schema.json.displaced.[0-9]*
+# END lemony
