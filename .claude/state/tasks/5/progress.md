@@ -4,7 +4,11 @@ PRD: docs/prds/front-theme-y-flujo-part-1-2026-11-25.md
 Feature PRD: `docs/prds/front-theme-y-flujo-2026-11-25.md` — PD2, PD3, PD12, PD13
 Kind: feature
 Spikes: 0/0/0
+Mode: all-at-once
+Auto-commit: off
+Agent-decided: shown (gate)
+Agent-decided calls: 26 shown, 0 changed
 
 ## Status
 
-Scaffolded. Next: UI design (task touches UI), then the plan.
+Plan ready; gate passed (all-at-once, auto-commit off). Next: implementation.
