@@ -1,4 +1,10 @@
 node_modules/
+dist/
+coverage/
+.turbo/
+.env
+!.env.example
+.DS_Store
 
 # BEGIN lemony
 .claude/state/current-*.md

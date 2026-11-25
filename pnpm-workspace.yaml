@@ -1,0 +1,12 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Dependency policy (PD2): exact versions, 7-day release age, no lifecycle scripts.
+saveExact: true
+minimumReleaseAge: 10080
+# Temporary exception: the harness version was published < 7 days before the
+# migration. Remove from 2026-11-23 on.
+minimumReleaseAgeExclude:
+  - "@lemoncode/lemony@0.12.0"
+onlyBuiltDependencies: []
