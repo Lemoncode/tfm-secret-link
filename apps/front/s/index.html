@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Secret Link</title>
+    <script src="/theme-init.js"></script>
+    <link rel="stylesheet" href="/src/design-system/tokens.css" />
+    <link rel="stylesheet" href="/src/design-system/components.css" />
+    <link rel="stylesheet" href="/src/theme-switch.css" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <div class="sl-page">
+      <header class="sl-header">
+        <a class="sl-brand" href="/"
+          ><span class="sl-brand__mark"
+            ><img
+              src="/src/design-system/logos/secret-link-isotipo-transparente.png"
+              alt="" /></span
+          ><span><span class="sl-brand__name">Secret Link</span></span></a
+        >
+        <sl-theme-switch></sl-theme-switch>
+      </header>
+      <main class="sl-main">
+        <h1 class="sl-visually-hidden">Sesión</h1>
+        <div id="session"></div>
+      </main>
+    </div>
+    <template id="sl-theme-switch-template">
+      <div class="sl-theme-switch" role="radiogroup" aria-label="Tema">
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="light"
+          aria-label="Claro"
+          title="Claro"
+        >
+          <svg data-icon="sun"></svg>
+        </button>
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="dark"
+          aria-label="Oscuro"
+          title="Oscuro"
+        >
+          <svg data-icon="moon"></svg>
+        </button>
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="system"
+          aria-label="Según el sistema"
+          title="Según el sistema"
+        >
+          <svg data-icon="monitor"></svg>
+        </button>
+      </div>
+    </template>
+  </body>
+</html>
