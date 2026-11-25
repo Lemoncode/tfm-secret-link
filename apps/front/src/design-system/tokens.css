@@ -1,0 +1,176 @@
+/* =====================================================================
+   Secret Link — tokens.css
+   Variables CSS (custom properties) generadas desde tokens.json.
+   Tema claro por defecto. Tema oscuro con [data-theme="dark"] en <html>
+   o, si no se fija data-theme, según prefers-color-scheme del sistema.
+   Sin dependencias, sin fuentes externas.
+   ===================================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  /* Color */
+  --bg: #F5F7FA;
+  --surface: #FFFFFF;
+  --surface-sunken: #F1F4F8;
+  --surface-hover: #E9EEF4;
+  --border: #DDE3EA;
+  --border-strong: #8794A5;
+  --ink: #0B1B33;
+  --ink-muted: #475569;
+  --ink-subtle: #5B6B80;
+  --navy: #022548;
+  --logo-tile: #FFFFFF;
+  --teal: #00AEA6;
+  --primary: #0B7C83;
+  --primary-hover: #096970;
+  --on-primary: #FFFFFF;
+  --primary-soft: #E3F4F2;
+  --on-primary-soft: #0B6E74;
+  --link: #1A5FD0;
+  --focus: #1A5FD0;
+  --verify-bg: #E6F7F2;
+  --verify-ink: #062A44;
+  --warning: #8A5300;
+  --warning-soft: #FFF5DD;
+  --warning-border: #E0B45C;
+  --danger: #C0262D;
+  --danger-soft: #FDECEC;
+  --success: #13773A;
+  --success-soft: #E6F6EC;
+  --disabled-bg: #E2E8EF;
+  --disabled-ink: #64748B;
+  --scrim: rgba(7, 19, 31, 0.56);
+  /* Sombras */
+  --shadow-card: 0 1px 2px rgba(11, 27, 51, 0.06), 0 8px 24px rgba(11, 27, 51, 0.06);
+  --shadow-button: 0 6px 16px rgba(11, 124, 131, 0.24);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  /* Color */
+  --bg: #07131F;
+  --surface: #0D1C2B;
+  --surface-sunken: #091725;
+  --surface-hover: #132738;
+  --border: #1C3144;
+  --border-strong: #5D7488;
+  --ink: #EAF1F6;
+  --ink-muted: #A9BACB;
+  --ink-subtle: #8CA0B3;
+  --navy: #022548;
+  --logo-tile: #EAF1F6;
+  --teal: #00AEA6;
+  --primary: #2FD3B0;
+  --primary-hover: #5EE0C4;
+  --on-primary: #032019;
+  --primary-soft: #103634;
+  --on-primary-soft: #5EE6C8;
+  --link: #86B7FF;
+  --focus: #86B7FF;
+  --verify-bg: #0F3030;
+  --verify-ink: #E6FFF7;
+  --warning: #F6BE4F;
+  --warning-soft: #2A2414;
+  --warning-border: #6B5320;
+  --danger: #FF8585;
+  --danger-soft: #36181F;
+  --success: #4ADE80;
+  --success-soft: #10301F;
+  --disabled-bg: #1A2B3B;
+  --disabled-ink: #8094A7;
+  --scrim: rgba(0, 0, 0, 0.64);
+  /* Sombras */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.32);
+  --shadow-button: 0 6px 20px rgba(47, 211, 176, 0.18);
+}
+
+/* Sin data-theme explícito: seguir la preferencia del sistema. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    /* Color */
+    --bg: #07131F;
+    --surface: #0D1C2B;
+    --surface-sunken: #091725;
+    --surface-hover: #132738;
+    --border: #1C3144;
+    --border-strong: #5D7488;
+    --ink: #EAF1F6;
+    --ink-muted: #A9BACB;
+    --ink-subtle: #8CA0B3;
+    --navy: #022548;
+    --logo-tile: #EAF1F6;
+    --teal: #00AEA6;
+    --primary: #2FD3B0;
+    --primary-hover: #5EE0C4;
+    --on-primary: #032019;
+    --primary-soft: #103634;
+    --on-primary-soft: #5EE6C8;
+    --link: #86B7FF;
+    --focus: #86B7FF;
+    --verify-bg: #0F3030;
+    --verify-ink: #E6FFF7;
+    --warning: #F6BE4F;
+    --warning-soft: #2A2414;
+    --warning-border: #6B5320;
+    --danger: #FF8585;
+    --danger-soft: #36181F;
+    --success: #4ADE80;
+    --success-soft: #10301F;
+    --disabled-bg: #1A2B3B;
+    --disabled-ink: #8094A7;
+    --scrim: rgba(0, 0, 0, 0.64);
+    /* Sombras */
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.32);
+    --shadow-button: 0 6px 20px rgba(47, 211, 176, 0.18);
+  }
+}
+
+:root {
+  /* Tipografía: pilas de sistema, ninguna descarga */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  /* Espaciado (escala de 4 px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  /* Radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  /* Tamaños de control e iconos */
+  --control-sm: 36px;
+  --control-md: 44px;
+  --control-lg: 56px;
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --content-max: 960px;
+}
+
+/* Estilos de texto: clases utilitarias (class="title-1", etc.) */
+/* Titulares */
+.display { font-family: var(--font-sans); font-size: 48px; line-height: 56px; font-weight: 800; letter-spacing: -0.02em; }
+.title-1 { font-family: var(--font-sans); font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.01em; }
+.title-2 { font-family: var(--font-sans); font-size: 24px; line-height: 32px; font-weight: 700; }
+.title-3 { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 600; }
+/* Texto */
+.body-lg { font-family: var(--font-sans); font-size: 20px; line-height: 30px; font-weight: 400; }
+.body { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
+.body-sm { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 400; }
+.label { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600; }
+.overline { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+/* Datos */
+.timer { font-family: var(--font-mono); font-size: 56px; line-height: 64px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.verify-code { font-family: var(--font-sans); font-size: 48px; line-height: 56px; font-weight: 800; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.code { font-family: var(--font-mono); font-size: 14px; line-height: 24px; font-weight: 400; }
+.timer-sm { font-family: var(--font-mono); font-size: 20px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }

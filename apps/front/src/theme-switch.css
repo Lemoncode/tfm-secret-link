@@ -1,0 +1,51 @@
+/* Theme selector (ui-handoff §5): Claro / Oscuro / Según el sistema.
+   Our own sheet, loaded after components.css, so the copied design system
+   stays byte-identical. Tokens only; switching is instant (no transition). */
+
+/* The header's last item. After the nav, the nav's auto margin already pushes
+   both to the right; alone beside the brand (on /s/, or at ≤640 px where the
+   nav is hidden) it takes the auto margin itself and stays in the first row. */
+sl-theme-switch {
+  display: block;
+  margin-left: auto;
+}
+.sl-header__nav + sl-theme-switch {
+  margin-left: 0;
+}
+@media (max-width: 640px) {
+  .sl-header__nav + sl-theme-switch {
+    margin-left: auto;
+  }
+}
+
+.sl-theme-switch {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.sl-theme-switch__option {
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-md);
+  height: var(--control-md);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+.sl-theme-switch__option .sl-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+}
+.sl-theme-switch__option:hover {
+  background: var(--surface-hover);
+}
+/* Checked: besides the soft fill, a --primary border is the non-colour cue
+   (≥3:1 against --surface in both themes; the fill alone is 1.14:1 / 1.31:1). */
+.sl-theme-switch__option[aria-checked="true"] {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--on-primary-soft);
+}

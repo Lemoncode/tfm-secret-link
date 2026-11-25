@@ -9,3 +9,7 @@ coverage/
 .turbo/
 node_modules/
 README.md
+
+# Copied byte-identical from the design handoff (feature PD8): never reformat.
+apps/front/src/design-system/tokens.css
+apps/front/src/design-system/components.css

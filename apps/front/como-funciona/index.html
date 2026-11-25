@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Cómo funciona · Secret Link</title>
+    <script src="/theme-init.js"></script>
+    <link rel="stylesheet" href="/src/design-system/tokens.css" />
+    <link rel="stylesheet" href="/src/design-system/components.css" />
+    <link rel="stylesheet" href="/src/theme-switch.css" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <div class="sl-page">
+      <header class="sl-header">
+        <a class="sl-brand" href="/"
+          ><span class="sl-brand__mark"
+            ><img
+              src="/src/design-system/logos/secret-link-isotipo-transparente.png"
+              alt="" /></span
+          ><span><span class="sl-brand__name">Secret Link</span></span></a
+        >
+        <nav class="sl-header__nav" aria-label="Principal">
+          <a href="/como-funciona">Cómo funciona</a>
+        </nav>
+        <sl-theme-switch></sl-theme-switch>
+      </header>
+      <main class="sl-main">
+        <div class="sl-card--wide sl-stack--lg">
+          <section class="sl-card" aria-labelledby="h">
+            <div class="sl-stack--lg">
+              <div class="sl-stack">
+                <h1 id="h" class="title-1">Cómo funciona</h1>
+                <p class="body-lg sl-muted">
+                  Cuatro pasos, unos cinco minutos y nada guardado en el
+                  servidor.
+                </p>
+              </div>
+              <ol class="sl-ordered">
+                <li>
+                  <strong>Crea la transferencia</strong
+                  ><span
+                    >Tu navegador genera un enlace único y aleatorio. Compártelo
+                    solo por la llamada.</span
+                  >
+                </li>
+                <li>
+                  <strong>El receptor abre el enlace</strong
+                  ><span
+                    >Vuestros navegadores acuerdan una clave (ECDH P-256 + HKDF)
+                    sin enviarla nunca.</span
+                  >
+                </li>
+                <li>
+                  <strong>Comparad el código</strong
+                  ><span
+                    >Leed en voz alta las palabras. Si no coinciden, alguien se
+                    ha interpuesto: cancelad.</span
+                  >
+                </li>
+                <li>
+                  <strong>Envía y listo</strong
+                  ><span
+                    >Se cifra con AES-256-GCM en tu navegador. El servidor solo
+                    reenvía bytes cifrados y cierra la sala.</span
+                  >
+                </li>
+              </ol>
+            </div>
+          </section>
+          <section class="sl-card" aria-labelledby="ve">
+            <div class="sl-stack--lg">
+              <div class="sl-stack">
+                <h2 id="ve" class="title-2">Qué ve cada parte</h2>
+                <p class="body sl-muted">
+                  El servidor pone en contacto a los navegadores y transporta lo
+                  que no puede descifrar.
+                </p>
+              </div>
+              <div class="sl-table-wrap">
+                <table class="sl-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Información</th>
+                      <th scope="col">Emisor</th>
+                      <th scope="col">Receptor</th>
+                      <th scope="col">Servidor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Contenido original</th>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-no">No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Claves privadas</th>
+                      <td class="sl-yes">Solo la suya</td>
+                      <td class="sl-yes">Solo la suya</td>
+                      <td class="sl-no">No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Clave de sesión AES</th>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-no">No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Claves públicas y sal</th>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-yes">Sí</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Contenido cifrado</th>
+                      <td class="sl-yes">Sí</td>
+                      <td class="sl-yes">Sí</td>
+                      <td>Solo en tránsito</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">IP, hora y tamaño aproximado</th>
+                      <td>Parcial</td>
+                      <td>Parcial</td>
+                      <td class="sl-yes">Sí</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section class="sl-card" aria-labelledby="lim">
+            <div class="sl-stack--lg">
+              <div class="sl-stack">
+                <h2 id="lim" class="title-2">Lo que no puede evitar</h2>
+                <p class="body sl-muted">
+                  Reducimos el riesgo del transporte, pero no todos los
+                  escenarios.
+                </p>
+              </div>
+              <div>
+                <details class="sl-details" open="open">
+                  <summary>Si uno de los equipos está comprometido</summary>
+                  <div>
+                    Malware, una extensión maliciosa o un navegador manipulado
+                    pueden leer el contenido antes de cifrarlo o después de
+                    descifrarlo.
+                  </div>
+                </details>
+                <details class="sl-details">
+                  <summary>Si alguien obtiene el enlace completo</summary>
+                  <div>
+                    Podría intentar entrar antes que el receptor. La caducidad,
+                    el límite de dos personas y el código de verificación lo
+                    reducen, pero compártelo solo por la llamada.
+                  </div>
+                </details>
+                <details class="sl-details">
+                  <summary>Lo que el receptor haga después</summary>
+                  <div>
+                    Una vez descifrado, el receptor puede copiarlo o guardarlo.
+                    Ninguna herramienta puede borrarlo de su equipo.
+                  </div>
+                </details>
+                <details class="sl-details">
+                  <summary>Los metadatos</summary>
+                  <div>
+                    El servidor ve IP, hora, duración y tamaño aproximado.
+                    Protegemos el contenido, no todos los metadatos.
+                  </div>
+                </details>
+                <details class="sl-details">
+                  <summary>Qué no es Secret Link</summary>
+                  <div>
+                    No es un gestor de secretos, ni un almacén de archivos, ni
+                    sirve para dejar un secreto y que lo recojan horas después:
+                    los dos tenéis que estar conectados a la vez.
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <div class="sl-actions">
+            <a class="sl-btn sl-btn--primary sl-btn--lg" href="/s/"
+              >Crear transferencia segura<svg
+                class="sl-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14"></path>
+                <path d="M13 6l6 6-6 6"></path></svg
+            ></a>
+          </div>
+        </div>
+      </main>
+      <footer class="sl-footer">
+        <span>Seguro · Simple · Temporal</span><span>Tú tienes el control</span>
+      </footer>
+    </div>
+    <template id="sl-theme-switch-template">
+      <div class="sl-theme-switch" role="radiogroup" aria-label="Tema">
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="light"
+          aria-label="Claro"
+          title="Claro"
+        >
+          <svg data-icon="sun"></svg>
+        </button>
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="dark"
+          aria-label="Oscuro"
+          title="Oscuro"
+        >
+          <svg data-icon="moon"></svg>
+        </button>
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="system"
+          aria-label="Según el sistema"
+          title="Según el sistema"
+        >
+          <svg data-icon="monitor"></svg>
+        </button>
+      </div>
+    </template>
+  </body>
+</html>

@@ -1,18 +1,146 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="referrer" content="no-referrer" />
     <title>Secret Link</title>
-    <link rel="stylesheet" href="/src/styles.css" />
+    <script src="/theme-init.js"></script>
+    <link rel="stylesheet" href="/src/design-system/tokens.css" />
+    <link rel="stylesheet" href="/src/design-system/components.css" />
+    <link rel="stylesheet" href="/src/theme-switch.css" />
     <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
-    <main>
-      <h1>Secret Link</h1>
-      <p id="health" class="health" role="status" data-state="checking">
-        Comprobando servidor…
-      </p>
-    </main>
+    <div class="sl-page">
+      <header class="sl-header">
+        <a class="sl-brand" href="/"
+          ><span class="sl-brand__mark"
+            ><img
+              src="/src/design-system/logos/secret-link-isotipo-transparente.png"
+              alt="" /></span
+          ><span><span class="sl-brand__name">Secret Link</span></span></a
+        >
+        <nav class="sl-header__nav" aria-label="Principal">
+          <a href="/como-funciona">Cómo funciona</a>
+        </nav>
+        <sl-theme-switch></sl-theme-switch>
+      </header>
+      <main class="sl-main">
+        <section class="sl-card sl-card--center" aria-labelledby="h">
+          <img
+            class="sl-hero-mark"
+            src="/src/design-system/logos/secret-link-isotipo-transparente.png"
+            alt=""
+          />
+          <div class="sl-stack">
+            <h1 id="h" class="display">Envía secretos sin dejar rastro</h1>
+            <p class="body-lg sl-muted">
+              Comparte un .env o una clave de forma cifrada,<br
+                class="sl-br-desktop"
+              />
+              temporal y sin almacenarla en el servidor.
+            </p>
+          </div>
+          <div class="sl-stack">
+            <div class="sl-actions">
+              <a
+                class="sl-btn sl-btn--primary sl-btn--lg sl-btn--hero"
+                href="/s/"
+                >Crear transferencia segura<svg
+                  class="sl-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14"></path>
+                  <path d="M13 6l6 6-6 6"></path></svg
+              ></a>
+            </div>
+            <p class="body-sm sl-muted">
+              Los dos tenéis que estar conectados a la vez, por ejemplo durante
+              una llamada.
+            </p>
+            <p><a class="sl-link" href="/como-funciona">¿Cómo funciona?</a></p>
+          </div>
+          <hr class="sl-divider" />
+          <ul class="sl-features">
+            <li>
+              <span class="sl-icon-badge"
+                ><svg class="sl-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                  <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                  <path d="M12 15v2"></path></svg></span
+              >Cifrado de extremo a extremo
+            </li>
+            <li>
+              <span class="sl-icon-badge"
+                ><svg class="sl-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M10.6 5.1Q11.3 5 12 5c6 0 9.5 7 9.5 7a16 16 0 0 1-2.7 3.6"
+                  ></path>
+                  <path
+                    d="M6.6 6.6C4 8.4 2.5 12 2.5 12S6 19 12 19a9 9 0 0 0 5.2-1.6"
+                  ></path>
+                  <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path>
+                  <path d="M3 3l18 18"></path></svg></span
+              >El servidor no puede leerlo
+            </li>
+            <li>
+              <span class="sl-icon-badge"
+                ><svg class="sl-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7v5l3 2"></path></svg></span
+              >La sesión caduca en 5 minutos
+            </li>
+          </ul>
+        </section>
+      </main>
+      <footer class="sl-footer">
+        <span>Seguro · Simple · Temporal</span><span>Tú tienes el control</span>
+      </footer>
+    </div>
+    <template id="sl-theme-switch-template">
+      <div class="sl-theme-switch" role="radiogroup" aria-label="Tema">
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="light"
+          aria-label="Claro"
+          title="Claro"
+        >
+          <svg data-icon="sun"></svg>
+        </button>
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="dark"
+          aria-label="Oscuro"
+          title="Oscuro"
+        >
+          <svg data-icon="moon"></svg>
+        </button>
+        <button
+          type="button"
+          class="sl-theme-switch__option"
+          role="radio"
+          aria-checked="false"
+          tabindex="-1"
+          data-theme-option="system"
+          aria-label="Según el sistema"
+          title="Según el sistema"
+        >
+          <svg data-icon="monitor"></svg>
+        </button>
+      </div>
+    </template>
   </body>
 </html>
